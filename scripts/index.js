@@ -26,14 +26,53 @@ window.onload = function () {
             .then(function (data) {
                 var trainNames = data.Trains;
                 console.log(trainNames);
-                var result = trainNames.map(function (train) {
+                function tabulate(data, columns) {
+                    var table = d3.select(trainsList).append('table');
+                    var thead = table.append('thead');
+                    var	tbody = table.append('tbody');
+
+                    // append the header row
+                    thead.append('tr')
+                        .selectAll('th')
+                        .data(columns).enter()
+                        .append('th')
+                        .text(function (column) { return column; });
+
+                    // create a row for each object in the data
+                    var rows = tbody.selectAll('tr')
+                        .data(data)
+                        .enter()
+                        .append('tr');
+
+                    // create a cell in each row for each column
+                    var cells = rows.selectAll('td')
+                        .data(function (row) {
+                            return columns.map(function (column) {
+                                return {column: column, value: row[column]};
+                            });
+                        })
+                        .enter()
+                        .append('td')
+                        .text(function (d) { return d.value; });
+
+                    return table;
+                }
+
+                // render the table(s)
+                tabulate(trainNames, ['Car', 'DestinationName']); // 2 column table
+
+            });
+                /*var result = trainNames.map(function (train) {
                     var trains = document.createElement('div');
+                    var car = document.createElement('div');
+                    car.innerText = train.Car;
                     trains.value = train.Group;
                     trains.innerText = train.DestinationName;
+                    trains.appendChild(car);
                     trainsList.appendChild(trains);
                     return trains;
-                })
+                })*/
             })
         jQuery(trainsList).empty();
-    })
-}
+    }
+
