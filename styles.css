@@ -1,0 +1,12 @@
+#stations,
+#trains {
+  display: flex;
+  font-size: 20px;
+  margin: 30px auto;
+  width: 480px;
+}
+
+#trains {
+  align-items: center;
+  flex-direction: column;
+}
